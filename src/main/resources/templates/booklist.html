@@ -2,18 +2,26 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
-    <title>Title</title>
+    <title>Booklist</title>
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
 </head>
 <body>
 <table class="table table-striped">
+    <h2>Books</h2>
     <tr>
-        <th>Testi testi</th>
+        <th>Author</th>
+        <th>Title</th>
+        <th>ISBN</th>
+        <th>Year</th>
     </tr>
     <tr th:each="book : ${books}">
-        <td th:text="${book.title} + ' ' + ${book.author}"></td>
-        <td th:text="${book.year} + ' ' + ${book.price}"></td>
-        <td><a th:href="@{/delete/{id}(id=${book.id})}">Delete</a></td>
+        <td th:text="${book.author}"></td>
+        <td th:text="${book.title}"></td>
+        <td th:text="${book.isbn}"></td>
+        <td th:text="${book.year}"></td>
+        <td><a th:href="@{/delete/{id}(id=${book.id})}" class="btn btn-danger">Delete</a></td>
     </tr>
 </table>
+<a href="/addbook" class="btn btn-success">Add Book</a>
 </body>
 </html>
