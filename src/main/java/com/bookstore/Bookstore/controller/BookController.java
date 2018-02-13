@@ -21,8 +21,6 @@ public class BookController {
     public String studentList(Model model) {
         model.addAttribute("books", repository.findAll());
         return "booklist";
-
-
     }
 
     @RequestMapping(value="/add")
@@ -36,7 +34,14 @@ public class BookController {
     public String save(Book book){
         repository.save(book);
 
-        return "redirect:booklist";
+        return "redirect:/booklist";
     }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public String deleteBook(@PathVariable("id") Long id, Model model) {
+        repository.delete(id);
+        return "redirect:/booklist";
+    }
+
 
 }
