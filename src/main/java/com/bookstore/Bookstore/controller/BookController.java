@@ -1,6 +1,7 @@
 package com.bookstore.Bookstore.controller;
 
 import com.bookstore.Bookstore.model.Book;
+import com.bookstore.Bookstore.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,31 +16,35 @@ import java.util.List;
 public class BookController {
 
     @Autowired
-    private BookRepository repository;
+    private BookRepository bookRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @RequestMapping("/booklist")
-    public String studentList(Model model) {
-        model.addAttribute("books", repository.findAll());
+    public String bookList(Model model) {
+        model.addAttribute("books", bookRepository.findAll());
         return "booklist";
     }
 
     @RequestMapping(value="/addbook")
     public String addBook(Model model){
         model.addAttribute("book", new Book());
+        model.addAttribute("categories", categoryRepository.findAll());
 
         return "addbook";
     }
 
     @RequestMapping(value="/save", method = RequestMethod.POST)
     public String save(Book book){
-        repository.save(book);
+        bookRepository.save(book);
 
         return "redirect:/booklist";
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public String deleteBook(@PathVariable("id") Long id, Model model) {
-        repository.delete(id);
+        bookRepository.delete(id);
         return "redirect:/booklist";
     }
 
