@@ -1,6 +1,5 @@
 package com.bookstore.Bookstore.config;
 
-import com.bookstore.Bookstore.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,46 +15,39 @@ import javax.servlet.http.HttpSession;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private HttpSession session;
+    private UserDetailServiceImpl userDetailService;
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(HttpSecurity http) throws Exception{
 
         http.authorizeRequests().antMatchers("/resources/**").permitAll().anyRequest().permitAll();
-        session.setAttribute("user", new User());
 
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/booklist", "/addbook").permitAll()
-                    .antMatchers("/admin/**").hasRole("ADMIN")
-                    .anyRequest().authenticated()
-                    .and()
-                .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
-                    .and()
-                .logout()
-                    .permitAll()
-                    .invalidateHttpSession(true);
-
-        http.authorizeRequests()
-                    .antMatchers("/admin/**").hasRole("ADMIN")
-                    .anyRequest().authenticated()
-                    .and()
-                .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
-                    .and()
-                .logout()
-                    .permitAll()
-                    .invalidateHttpSession(true);
+                .antMatchers("/", "/booklist", "/addbook", "/login", "/api/**").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and()
+               .formLogin()
+               .loginPage("/login")
+                .permitAll()
+                .and()
+               .logout()
+                .permitAll();
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
-        auth
-                .userDetailsService(userDetailsService())
-                .passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(userDetailService).passwordEncoder(new BCryptPasswordEncoder());
+
+            auth
+                .inMemoryAuthentication()
+                    .withUser("user").password("password").roles("USER");
+
+            auth
+                .inMemoryAuthentication()
+                .withUser("admin").password("password").roles("ADMIN");
     }
+
 }

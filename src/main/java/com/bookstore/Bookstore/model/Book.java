@@ -16,6 +16,15 @@ public class Book {
     private String isbn;
     private double price;
 
+    public Book(String title, String author, String year, String isbn, double price){
+        this.title = title;
+        this.author = author;
+        this.year = year;
+        this.isbn = isbn;
+        this.price = price;
+
+    }
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "categoryid")

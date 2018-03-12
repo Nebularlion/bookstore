@@ -21,6 +21,13 @@ public class User {
     @Column(name = "role", nullable = false)
     private String role;
 
+    public User(String username, String passwordHash, String email, String role){
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.email = email;
+        this.role = role;
+    }
+
     public Long getId() {
         return id;
     }
