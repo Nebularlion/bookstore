@@ -16,6 +16,10 @@ public class Category {
         this.name = name;
     }
 
+    public Category(){
+
+    }
+
     @OneToMany
     private List<Book> books;
 

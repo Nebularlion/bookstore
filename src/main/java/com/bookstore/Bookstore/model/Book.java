@@ -25,6 +25,10 @@ public class Book {
 
     }
 
+    public Book(){
+
+    }
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "categoryid")
